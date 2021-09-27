@@ -12,5 +12,3 @@ COPY . .
 
 RUN pip install -r requirements.txt
 RUN apt-get install -y sqlite3 libsqlite3-dev
-RUN mkdir /db
-RUN /usr/bin/sqlite3 /db/test.db
