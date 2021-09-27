@@ -16,11 +16,33 @@ c) python iHeartMedia.py question_2
 d) python iHeartMedia.py question_3
 
 
-4. check container status by:
+4. check table status by:
 
-docker ps
+sqlite3 test.db
+
+sqlite> select * from question_1;
+0|avg_col|5.54545454545455
+
+sqlite> select * from question_3;
+0|total_row|97290
+
+sqlite> select * from question_2 limit 10;
+0|2047||1.0
+1|7505||1.0
+2|5432||1.0
+3|7481||1.0
+4|1338||1.0
+5|3387||1.0
+6|5440||1.0
+7|7489||1.0
+8|1346||1.0
+9|3395||1.0
+
+sqlite> select count(*) from question_2;
+176865
 
 
 5. stop the container by:
 
+docker ps
 docker stop <id>
