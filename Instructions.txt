@@ -1,0 +1,26 @@
+1. built docker image using this command(careful with the dot):
+
+docker build -t iheart .
+
+
+2. run the container using this command:
+
+docker run --rm -it iheart /bin/bash
+
+
+3. run the tasks using below command:
+
+a) python iHeartMedia.py load_db -d test.db 
+b) python iHeartMedia.py question_1
+c) python iHeartMedia.py question_2
+d) python iHeartMedia.py question_3
+
+
+4. check container status by:
+
+docker ps
+
+
+5. stop the container by:
+
+docker stop <id>
