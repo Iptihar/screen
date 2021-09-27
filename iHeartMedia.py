@@ -17,7 +17,7 @@ from argparse import ArgumentParser
 class iHeartMedia:
    """
 
-   Class that will enable users to blah blah
+   Class that will enable users to run tasks
 
    """
 
@@ -56,6 +56,9 @@ class iHeartMedia:
          table_df.to_sql(table_name, conn, if_exists='replace')
          self.logger.info(f'table: {table_name} created successfully!')
          count += 1
+         if count == 12:
+             break
+      self.meta_df.to_sql("meta_data", conn, if_exists='replace')
 
 
 
@@ -66,7 +69,8 @@ class iHeartMedia:
       conn = sqlite3.connect("test.db")
 
       self.logger.info('extracting information from meta_data table')
-      avg = self.meta_df["col_num"].mean()
+      df = pd.read_sql_query(f"select * from meta_data;", conn)
+      avg = df["col_num"].mean()
       data = [['avg_col', avg]]
       df = pd.DataFrame(data, columns = ['Question', 'Answer'])
       self.logger.info(f'loading answer to {table_nm} table')
@@ -85,8 +89,8 @@ class iHeartMedia:
       conn = sqlite3.connect("test.db")
 
       total_df = pd.DataFrame(columns = ['value', 'count'])
-
-      for table_name in self.meta_df["table_nm"]:
+      df = pd.read_sql_query(f"select * from meta_data;", conn)
+      for table_name in df["table_nm"]:
          df = pd.read_sql_query(f"select * from {table_name};", conn)
          for column_nm in df:
             value_counts = df[column_nm].value_counts()
@@ -111,7 +115,8 @@ class iHeartMedia:
       conn = sqlite3.connect("test.db")
 
       self.logger.info('extracting information from meta_data table')
-      total_rows = self.meta_df["row_num"].sum()
+      df = pd.read_sql_query(f"select * from meta_data;", conn)
+      total_rows = df["row_num"].sum()
       data = [['total_row', total_rows]]
       df = pd.DataFrame(data, columns = ['Question', 'Answer'])
       self.logger.info(f'loading answer to {table_nm} table')
@@ -194,7 +199,7 @@ class iHeartMedia:
       """
       parser.add_argument(
         '-t',
-        '--table_name',
+        '--table_nm',
         help='table name to load the answer of question 1',
         required=False,
         default="question_1"
@@ -211,7 +216,7 @@ class iHeartMedia:
       """
       parser.add_argument(
         '-t',
-        '--table_name',
+        '--table_nm',
         help='table name to load the answer of question 2',
         required=False,
         default="question_2"
@@ -228,10 +233,10 @@ class iHeartMedia:
       """
       parser.add_argument(
         '-t',
-        '--table_name',
-        help='table name to load the answer of question 2',
+        '--table_nm',
+        help='table name to load the answer of question 3',
         required=False,
-        default="question_2"
+        default="question_3"
       )
 
 
@@ -274,7 +279,7 @@ class iHeartMedia:
        Notes:
 
        **Required for load_db**
-       - ``table`` `(str)` - The table to be loaded from csv files
+       - ``db`` `(str)` - The db to be loaded from csv files
 
        **Required for retrive**
        - ``table`` `(str)` - The table to load the answer of question 1
